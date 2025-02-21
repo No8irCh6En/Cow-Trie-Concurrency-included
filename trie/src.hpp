@@ -1,3 +1,7 @@
+/*
+* Acknowledgement : Yuxuan Wang for Modifying the prototype of TrieStore class 
+*/
+
 #ifndef SJTU_TRIE_HPP
 #define SJTU_TRIE_HPP
 
@@ -89,6 +93,9 @@ class Trie {
   // Create an empty trie.
   Trie() = default;
 
+  bool Trie::operator==(const Trie& other) const;
+  // by TA: if you don't need this, just comment out.
+
   // Get the value associated with the given key.
   // 1. If the key is not in the trie, return nullptr.
   // 2. If the key is in the trie but the type is mismatched, return nullptr.
@@ -125,29 +132,35 @@ class ValueGuard {
 // time.
 class TrieStore {
  public:
-  // This function returns a ValueGuard object that holds a reference to the value in the trie. If
+  // This function returns a ValueGuard object that holds a reference to the value in the trie of the given version (default: newest version). If
   // the key does not exist in the trie, it will return std::nullopt.
   template <class T>
-  auto Get(std::string_view key) -> std::optional<ValueGuard<T>>;
+  auto Get(std::string_view key, size_t version = -1) -> std::optional<ValueGuard<T>>;
 
   // This function will insert the key-value pair into the trie. If the key already exists in the
-  // trie, it will overwrite the value.
+  // trie, it will overwrite the value
+  // return the version number after operation
+  // Hint: new version should only be visible after the operation is committed(completed)
   template <class T>
-  void Put(std::string_view key, T value);
+  size_t Put(std::string_view key, T value);
 
   // This function will remove the key-value pair from the trie.
-  void Remove(std::string_view key);
+  // return the version number after operation
+  // if the key does not exist, version number should not be increased
+  size_t Remove(std::string_view key);
+
+  // This function return the newest version number
+  size_t get_version();
 
  private:
-  // This mutex protects the root. Everytime you want to access the trie root or modify it, you
-  // will need to take this lock.
-  std::mutex root_lock_;
 
   // This mutex sequences all writes operations and allows only one write operation at a time.
+  // Concurrent modifications should have the effect of applying them in some sequential order
   std::mutex write_lock_;
 
-  // Stores the current root for the trie.
-  Trie root_;
+  // Stores all historical versions of trie
+  // version number ranges from [0, snapshots_.size())
+  std::vector<Trie> snapshots_{1};
 };
 
 }  // namespace sjtu
