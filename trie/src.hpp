@@ -93,7 +93,7 @@ class Trie {
   // Create an empty trie.
   Trie() = default;
 
-  bool Trie::operator==(const Trie& other) const;
+  bool operator==(const Trie& other) const;
   // by TA: if you don't need this, just comment out.
 
   // Get the value associated with the given key.
