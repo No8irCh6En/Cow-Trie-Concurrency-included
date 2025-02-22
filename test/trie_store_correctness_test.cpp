@@ -1,4 +1,6 @@
 // THIS TEST IS FOR THE CORRECTNESS OF CONCURRENCY
+// If your program only goes wrong on this test,
+// please consider the thread-safety of std::vector 
 
 #include <atomic>
 #include <chrono>
@@ -41,6 +43,8 @@ void ContinueGet(TrieStore& store, int idx) {
             std::nullopt) {
             inserted++;
         }
+        std::this_thread::sleep_for(std::chrono::nanoseconds(50));
+        // switch the context
     }
     while (duration < std::chrono::seconds(200)) {
         for (int i = 1; i <= 100; i++) {
@@ -53,6 +57,8 @@ void ContinueGet(TrieStore& store, int idx) {
         }
         end = std::chrono::high_resolution_clock::now();
         duration = duration_cast<std::chrono::seconds>(end - start);
+        std::this_thread::sleep_for(std::chrono::nanoseconds(50));
+        // switch the context
     }
 }
 
