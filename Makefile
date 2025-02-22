@@ -12,7 +12,7 @@ TARGETS = $(BIN_DIR)/trie_test1 $(BIN_DIR)/trie_test2 $(BIN_DIR)/trie_test3 \
           $(BIN_DIR)/trie_store_noncopy_test $(BIN_DIR)/trie_store_correctness_test \
 
 
-all: $(TARGETS)
+all: $(BIN_DIR) $(TARGETS)
 
 
 $(BIN_DIR):
