@@ -39,7 +39,7 @@ Your trie should support 3 operations:
 None of these operations should be performed directly on the trie itself. You should create new trie nodes and reuse existing ones as much as possible.
 4. operator==: Actually it is not necessary. If you don't need this, just comment out.
 
-To create a new node, you should use the Clone function on the TrieNode class. To reuse an existing node in the new trie, you can copy `std::shared_ptr<TrieNode>`: copying a shared pointer doesn’t copy the underlying data. You should not manually allocate memory by using new and delete in this project. std::shared_ptr will deallocate the object when no one has a reference to the underlying object.
+To create a new node, you should use the Clone function on the TrieNode class. To reuse an existing node in the new trie, you can copy `std::shared_ptr<TrieNode>`: copying a shared pointer doesn’t copy the underlying data. You should not manually allocate memory by using new and delete in this project. `std::shared_ptr` will deallocate the object when no one has a reference to the underlying object.
 
 For the full specifications of these operations, please refer to the comments in the starter code.
     
